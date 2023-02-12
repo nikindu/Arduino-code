@@ -1,0 +1,45 @@
+// C++ code
+//
+
+#define trigPin 2
+#define echoPin 3
+#include <Servo.h>
+
+Servo servo;
+long duration;
+int distance;
+
+void setup()
+{
+  servo.attach(6);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  Serial.begin(9600);
+  Serial.println("Hello these are our readings: ");
+}
+
+void loop()
+{
+  // Turning off trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  
+  // Turning on trigPin for 10 microseconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  // Reading from echoPin
+  duration = pulseIn(echoPin, HIGH);
+  
+  // Calculating distance using speed of sound
+  distance = duration * 0.034/2;
+  //If distance less than 100 servo at 0 degrees
+  if (distance >= 1 && distance <= 300) {
+  	servo.write(distance);
+  }
+  
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+}
